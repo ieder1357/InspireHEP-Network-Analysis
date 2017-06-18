@@ -13,6 +13,10 @@ Certainly an impressive record! He has some 70K+ citations. While certainly the 
 
 Feel free to take a look at the iPython notebook I'm attaching in this repository where I try to answer this question with InspireHEP's papers' metadata. In it, I attempt to evaluate the impact of a paper (and an author's collective work) through  the PageRank metric, instead of citation count or h-index (the number of papers H that an author has written which have at least H number of citations).
 
+For previous work related to this topic, you can go to:
+https://arxiv.org/pdf/physics/0604130.pdf which uses PageRank for papers published on Physical Review from 1893 to 2003.
+
+
 
 
 
