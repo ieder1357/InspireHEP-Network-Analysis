@@ -1,4 +1,4 @@
-# NetworkAnalysis
+# InspireHEP Network Analysis
 I perform a network analysis of papers in High Energy Physics (HEP) using PageRank.
 HEP is an overall open field. The standard practice is that you post a pre-print of your manuscript on 
 Arxiv.org before you submit to a journal. And there is InspireHEP, a site which lets you search for papers (amongst other things) by author name, title, date, etc.
