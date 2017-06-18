@@ -11,6 +11,6 @@ http://inspirehep.net/author/profile/S.Weinberg.1
 
 Certainly an impressive record! He has some 70K+ citations. While certainly the number of citations in Weinberg's case seems correlated with his scientific impact, is this always true?
 
-Feel free to take a look at the iPython notebook I'm attaching in this repository where I try to answer this question with InspireHEP's papers' metadata.
+Feel free to take a look at the iPython notebook I'm attaching in this repository where I try to answer this question with InspireHEP's papers' metadata. In it, I calculate the PageRank of every paper in InspireHEP's database.
 
 
