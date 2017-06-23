@@ -11,10 +11,15 @@ http://inspirehep.net/author/profile/S.Weinberg.1
 
 Certainly an impressive record! He has some 70K+ citations. While certainly the number of citations in Weinberg's case seems correlated with his scientific impact, is this always true?
 
-Feel free to take a look at the iPython notebook I'm attaching in this repository where I try to answer this question with InspireHEP's papers' metadata. In it, I attempt to evaluate the impact of a paper (and an author's collective work) through  the PageRank metric, instead of citation count or h-index (the number of papers H that an author has written which have at least H number of citations).
+Feel free to take a look at the iPython notebooks I'm attaching in this repository where I try to answer this question with InspireHEP's papers' metadata. It consists of some 1.2 million papers metadata, dating back to papers from 1962! In this project, I attempt to evaluate the impact of a paper (and an author's collective work) through  the PageRank metric, instead of citation count or h-index (the number of papers H that an author has written which have at least H number of citations).
 
-For previous work related to this topic, you can go to:
-https://arxiv.org/pdf/physics/0604130.pdf which uses PageRank for papers published on Physical Review from 1893 to 2003.
+For now, there are two iPython notebooks and associated text files. They should be viewed in the following order:
+
+1. network_analysis.ipynb: Here I begin to quantiy the importance of a paper through PageRank, as well as basic questions about the PageRank of authors as derived from their papers' PageRank.
+
+2. pagerank_vs_total_citations.ipynb: Here I try to answer the question: Is a paper's PageRank strongly correlated with its total number of citations? Same for authors.
+
+3. For the future. What I would really like to do is to try and quantify the following questions: What papers are the most central? Are there indicators that can help us predict papers and authors with high impact as soon as they are published? I'll keep writing questions as I come up with them. Hopefully I'll come back here and give answers to these questions too ;)
 
 
 
