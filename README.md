@@ -17,7 +17,7 @@ For now, there are two iPython notebooks and associated text files. They should 
 
 1. network_analysis.ipynb: Here I begin to quantiy the importance of a paper through PageRank, as well as basic questions about the PageRank of authors as derived from their papers' PageRank.
 
-2. pagerank_vs_total_citations.ipynb: Here I try to answer the question: Is a paper's PageRank strongly correlated with its total number of citations? Same for authors.
+2. network_analysis_part2.ipynb: Here I try to answer the question: Is a paper's PageRank strongly correlated with its total number of citations? Same for authors.
 
 3. For the future. What I would really like to do is to try and quantify the following questions: What papers are the most central? Are there indicators that can help us predict papers and authors with high impact as soon as they are published? I'll keep writing questions as I come up with them. Hopefully I'll come back here and give answers to these questions too ;)
 
