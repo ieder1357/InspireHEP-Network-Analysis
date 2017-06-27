@@ -29,13 +29,13 @@ def is_bad_publication(publication):
     ]
     bad_re = re.compile('|'.join(bad_title_strings)) 
     title = publication['title'].lower()
-    if  bad_re.search(title):
+    if  bad_re.search(title): # reject any paper if keyword in title
         return True
     if not authors: # lists are 'Truthy'. Empty lists are considered False
         return True
-    if not publication['citations']:
+    if not publication['citations']: # reject papers with 0 citations
         return True
-    if not publication['references']:
+    if not publication['references']: # reject papers with 0 references
         return True
     
     return False
@@ -58,8 +58,8 @@ def is_good_date(publication, date_range):
         pub_date = fix_parse(publication['creation_date'])
         min_date = parse(date_range[0]) # lower end of date range
         max_date = parse(date_range[1]) # higher end of date range
-        return (pub_date > min_date and pub_date < max_date)
-
+        return ((pub_date > min_date) and (pub_date < max_date))
+        
     else: # if date_range = None, don't apply time range cut
         return True
         
@@ -78,12 +78,12 @@ def compute_graph(DG, authors_by_recid, citations_by_recid, line, date_range = N
         authors_i = author + coauthor # let's merge author + coauthor into one entry
 
         # add (citation_i, publication) edges
-        #for citation_i in citations_i:
-        #    DG.add_edge(citation_i, recid)
+        for citation_i in citations_i:
+            DG.add_edge(citation_i, recid)
         
         # add (publication, reference_i) edges
-        #for reference_i in references_i:
-        #    DG.add_edge(recid,reference_i)
+        for reference_i in references_i:
+            DG.add_edge(recid,reference_i)
 
         authors_by_recid[recid] = authors_i
         citations_by_recid[recid] = len(citations_i)
