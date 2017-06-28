@@ -63,7 +63,7 @@ def is_good_date(publication, date_range):
     else: # if date_range = None, don't apply time range cut
         return True
         
-def compute_graph(DG, authors_by_recid, citations_by_recid, line, date_range = None):
+def compute_graph(DG, recid_authors, recid_citations, line, date_range = None):
     """Computes edges (i,j) for directed graph DG for current publication
     between (citation,publication) and (publication,reference)
     for each citation to publication and reference in publication
@@ -73,28 +73,25 @@ def compute_graph(DG, authors_by_recid, citations_by_recid, line, date_range = N
         author = publication['authors']
         coauthor = publication['co-authors']
         recid = publication['recid']
-        references_i = publication['references']
-        citations_i = publication['citations']
-        authors_i = author + coauthor # let's merge author + coauthor into one entry
+        references = publication['references']
+        citations = publication['citations']
+        authors = author + coauthor # let's merge author + coauthor into one entry
 
-        # add (citation_i, publication) edges
-        for citation_i in citations_i:
-            DG.add_edge(citation_i, recid)
+        # add (citation, publication) edges
+        for citation in citations:
+            DG.add_edge(citation, recid)
         
-        # add (publication, reference_i) edges
-        for reference_i in references_i:
-            DG.add_edge(recid,reference_i)
+        # add (publication, reference) edges
+        for reference in references:
+            DG.add_edge(recid,reference)
 
-        authors_by_recid[recid] = authors_i
-        citations_by_recid[recid] = len(citations_i)
+        recid_authors[recid] = authors
+        recid_citations[recid] = len(citations)
 
-def make_hist_by_author(measure_by_author, measure_name, constraint_str,  num_entries):
-    """Make hist of sorted measure tuple by author """
-    cumu_measure = [x_i 
-                    for _, x_i in measure_by_author[:num_entries]]
+def make_hist_by_author(author_measure, measure_name, constraint_str,  num_entries):
+    """Make hist of sorted (author, measure) tuple """
 
-    x_ticks_labels = [author_i 
-                      for author_i, _ in measure_by_author[:num_entries]]
+    x_ticks_labels, cumu_measure = zip(*author_measure[:num_entries]) # pythonic
 
     x = range(num_entries)
 
@@ -103,7 +100,7 @@ def make_hist_by_author(measure_by_author, measure_name, constraint_str,  num_en
     plt.xlabel("Author")
     title = 'Cumulative ' + measure_name + ' by Author (' + constraint_str + ')'
     plt.title(title)
-    plt.xticks([i+0.5 for i,_ in enumerate(cumu_measure)],
+    plt.xticks([i+0.5 for i, _ in enumerate(cumu_measure)],
                x_ticks_labels,
                rotation='vertical')
 
@@ -117,16 +114,16 @@ def get_norm(norm):
     else:
         return lambda x: 1
         
-def measure_by_author_dict(authors_by_recid, measure_by_recid, norm = None):
+def author_measure_dict(recid_authors, recid_measure, norm = None):
     """ return { author: measure } defaultdict
-    norm = None defaults to normalization of measure by author = 1
+    norm = None defaults to normalization of (author, measure) = 1
     """
-    var_type = type(measure_by_recid.values()[0]) # get the vartype for dict values
+    var_type = type(recid_measure.values()[0]) # get the vartype for dict values
     d = defaultdict(var_type) # key is author, value is measure
     
-    for recid_i, authors_i in authors_by_recid.iteritems():
-        for author_i in authors_i:
-            d[author_i] += measure_by_recid[recid_i]*get_norm(norm)(authors_i)
+    for recid, authors in recid_authors.iteritems():
+        for author in authors:
+            d[author] += recid_measure[recid]*get_norm(norm)(authors)
     
     return d
 
