@@ -158,7 +158,9 @@ def get_author_first_pub(recid_info):
     """ return dict
     key is author; value is author's first publication date
     """
+    # key is author; value is author's pub's dates
     author_pub_dates = get_author_pub_dates(recid_info)
+
     author_first_pub = {author: min(pub_dates).year
                         for author, pub_dates in author_pub_dates.iteritems()}
     return author_first_pub
@@ -169,7 +171,10 @@ def get_first_pub_year_authors(recid_info):
     first paper in that year
     """
     first_pub_year_authors = defaultdict(list)
+    # key is author; value is author's first pub's year
     author_first_pub = get_author_first_pub(recid_info)
+    
     for author, year in author_first_pub.iteritems():
         first_pub_year_authors[year].append(author)
+    
     return first_pub_year_authors
