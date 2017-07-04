@@ -19,7 +19,7 @@ For now, there are two iPython notebooks and associated text files. They should 
 
 2. network_analysis_part2.ipynb: Here I try to answer the question: Is a paper's PageRank strongly correlated with its total number of citations? Same for authors.
 
-3. network_analysis_part3.ipynb: Simple application of PR as a metric, by using it to recommend a hiring decision, i.e. if we were go hire a physicist today as a tenure-track faculty can we come up with a recommendation?
+3. network_analysis_part3.ipynb: Simple application of PR as a metric, by using it to recommend a hiring decision, i.e. if we were to hire a scientist today as a tenure-track faculty, can we come up with a recommendation?
 
 I'll keep writing questions as I come up with them. Hopefully I'll come back here and give answers to these questions too ;)
 
