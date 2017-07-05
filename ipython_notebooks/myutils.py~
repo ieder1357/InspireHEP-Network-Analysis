@@ -158,19 +158,21 @@ def find_best_fit(num_cites, prs):
     y_hat = regr.predict(x)
     return y_hat
 
-def get_std_dev(y, y_hat):
+def get_std_dev(prs, y_hat):
     """ Returns standard deviation
     """
+    y = np.array(prs) 
     # compute the standard deviation of the dependent variable PR(num_citations)
     sigma = (y - y_hat)**2 
     # two degrees of freedom beta_0 and beta_1 need to be subtracted from n_dof
-    std_dev = math.sqrt(sigma.sum()/(y_hat.shape[0] - 2))
+    std_dev = math.sqrt(sigma.sum()/(y.shape[0] - 2))
 
     return std_dev
 
-def find_outliers(y, y_hat):
+def find_outliers(prs, y_hat):
     """ Find the biggest outliers in data
     """
+    y = np.array(prs)
     residuals = y - y_hat
     # get indices of outliers, in decreasing order
     res_index_sorted = residuals.argsort()[::-1]

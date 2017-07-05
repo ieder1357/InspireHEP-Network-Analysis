@@ -84,12 +84,12 @@ def compute_graph(DG, recid_info, line, date_range = None):
         authors = author + coauthor
 
         # add (citation, publication) edges
-        #for citation in citations:
-        #    DG.add_edge(citation, recid)
+        for citation in citations:
+            DG.add_edge(citation, recid)
         
         # add (publication, reference) edges
-        #for reference in references:
-        #    DG.add_edge(recid,reference)
+        for reference in references:
+            DG.add_edge(recid,reference)
 
         # and update dict
         # key is recid; 
