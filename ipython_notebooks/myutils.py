@@ -3,11 +3,11 @@ from collections import defaultdict
 import json
 import re
 import matplotlib.pyplot as plt
-plt.rcParams['figure.figsize'] = (15, 3)
-plt.rcParams['font.family'] = 'sans-serif'
 from dateutil.parser import parse
 from datetime import datetime
-
+import numpy as np
+from sklearn import linear_model
+import math
 
 # utility functions we will need
 
@@ -84,12 +84,12 @@ def compute_graph(DG, recid_info, line, date_range = None):
         authors = author + coauthor
 
         # add (citation, publication) edges
-        for citation in citations:
-            DG.add_edge(citation, recid)
+        #for citation in citations:
+        #    DG.add_edge(citation, recid)
         
         # add (publication, reference) edges
-        for reference in references:
-            DG.add_edge(recid,reference)
+        #for reference in references:
+        #    DG.add_edge(recid,reference)
 
         # and update dict
         # key is recid; 
@@ -131,7 +131,7 @@ def author_metric_sorted(recid_info, metric = 'pr',norm = None):
     """ return (author, metric) list
     norm = None ->  defaults to normalization of (author, metric) = 1
     """
-    var_type = type(recid_info.values()[0][metric]) # get the vartype for dict values
+    var_type = type(recid_info.values()[0][metric]) # vartype for dict values
     d = defaultdict(var_type) # key is author, value is measure
     
     for _, info in recid_info.iteritems():
@@ -143,6 +143,41 @@ def author_metric_sorted(recid_info, metric = 'pr',norm = None):
 
     return d_sorted
 
+def find_best_fit(num_cites, prs):
+    """Returns y_hat - the best-fit y(x)
+    """
+    # convert arrays to numpy arrays, and reshape the independent variable
+    x = np.array(num_cites).reshape(-1, 1) # n x 1 independent variable
+    y = np.array(prs) # dependent variable
+
+    regr = linear_model.LinearRegression() # use linear regression
+    regr.fit(x, y) # to fit a straight line
+
+    # find the fit coefficients from Pr = beta_0 + beta_1 * num_cites
+    print 'Regression coefficients:', regr.intercept_, regr.coef_
+    y_hat = regr.predict(x)
+    return y_hat
+
+def get_std_dev(prs, y_hat):
+    """ Returns standard deviation
+    """
+    y = np.array(prs) 
+    # compute the standard deviation of the dependent variable PR(num_citations)
+    sigma = (y - y_hat)**2 
+    # two degrees of freedom beta_0 and beta_1 need to be subtracted from n_dof
+    std_dev = math.sqrt(sigma.sum()/(y.shape[0] - 2))
+
+    return std_dev
+
+def find_outliers(prs, y_hat):
+    """ Find the biggest outliers in data
+    """
+    y = np.array(prs)
+    residuals = y - y_hat
+    # get indices of outliers, in decreasing order
+    res_index_sorted = residuals.argsort()[::-1]
+    return res_index_sorted
+ 
 def get_author_pub_dates(recid_info):
     """ return dict
     key is author; value is author's pub_dates
@@ -154,27 +189,18 @@ def get_author_pub_dates(recid_info):
             author_pub_dates[author].append(info['pub_date'])
     return author_pub_dates
 
-def get_author_first_pub(recid_info):
-    """ return dict
-    key is author; value is author's first publication date
-    """
-    # key is author; value is author's pub's dates
-    author_pub_dates = get_author_pub_dates(recid_info)
-
-    author_first_pub = {author: min(pub_dates).year
-                        for author, pub_dates in author_pub_dates.iteritems()}
-    return author_first_pub
-
 def get_first_pub_year_authors(recid_info):
     """ return dict
     key is year; value is list of authors who published
     first paper in that year
     """
     first_pub_year_authors = defaultdict(list)
-    # key is author; value is author's first pub's year
-    author_first_pub = get_author_first_pub(recid_info)
-    
-    for author, year in author_first_pub.iteritems():
+
+    # key is author; value is author's pub's dates
+    author_pub_dates = get_author_pub_dates(recid_info)
+
+    for author, pub_dates in author_pub_dates.iteritems():
+        year = min(pub_dates).year # author's first pub's year
         first_pub_year_authors[year].append(author)
     
     return first_pub_year_authors
